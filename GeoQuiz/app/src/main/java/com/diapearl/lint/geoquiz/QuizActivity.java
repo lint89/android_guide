@@ -32,8 +32,7 @@ public class QuizActivity extends AppCompatActivity {
         setContentView(R.layout.activity_quiz);
 
         mQuestionTextView = findViewById(R.id.question_text_view);
-        int question = mQuestionsBank[mCurrentIndex].getTextResId();
-        mQuestionTextView.setText(question);
+        updateQuestion();
 
         mTrueButton = findViewById(R.id.true_button);
         mTrueButton.setOnClickListener(new View.OnClickListener() {
@@ -65,9 +64,13 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mCurrentIndex = (mCurrentIndex + 1) % mQuestionsBank.length;
-                int question = mQuestionsBank[mCurrentIndex].getTextResId();
-                mQuestionTextView.setText(question);
+                updateQuestion();
             }
         });
+    }
+
+    private void updateQuestion() {
+        int question = mQuestionsBank[mCurrentIndex].getTextResId();
+        mQuestionTextView.setText(question);
     }
 }
