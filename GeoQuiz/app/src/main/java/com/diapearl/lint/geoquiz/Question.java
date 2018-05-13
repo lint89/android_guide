@@ -3,6 +3,7 @@ package com.diapearl.lint.geoquiz;
 public class Question {
     private int mTextResId;
     private boolean mAnswerTrue;
+    private boolean mAnswered;
 
     public boolean isAnswerTrue() {
         return mAnswerTrue;
@@ -23,5 +24,13 @@ public class Question {
     public Question(int textResId, boolean answerTrue) {
         mTextResId = textResId;
         mAnswerTrue = answerTrue;
+    }
+
+    public boolean isAnswered() {
+        return mAnswered;
+    }
+
+    public void setAnswered(boolean answered) {
+        mAnswered = answered;
     }
 }

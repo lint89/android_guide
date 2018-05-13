@@ -75,7 +75,12 @@ public class QuizActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                checkAnswer(true);
+                if (mQuestionsBank[mCurrentIndex].isAnswered()) {
+                    Toast.makeText(QuizActivity.this, R.string.answered_toast, Toast.LENGTH_SHORT).show();
+                } else {
+                    checkAnswer(true);
+                    mQuestionsBank[mCurrentIndex].setAnswered(true);
+                }
             }
         });
 
@@ -84,7 +89,12 @@ public class QuizActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                checkAnswer(false);
+                if (mQuestionsBank[mCurrentIndex].isAnswered()) {
+                    Toast.makeText(QuizActivity.this, R.string.answered_toast, Toast.LENGTH_SHORT).show();
+                } else {
+                    checkAnswer(false);
+                    mQuestionsBank[mCurrentIndex].setAnswered(true);
+                }
             }
         });
 
