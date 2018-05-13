@@ -1,5 +1,6 @@
 package com.diapearl.lint.geoquiz;
 
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 public class QuizActivity extends AppCompatActivity {
     private static final String TAG = "QuizActivity";
+    private static final String KEY_INDEX = "index";
 
     private Button mTrueButton;
     private Button mFalseButton;
@@ -32,12 +34,31 @@ public class QuizActivity extends AppCompatActivity {
     private int mCurrentIndex = 0;
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.i(TAG, "onSaveInstanceState");
+        outState.putInt(KEY_INDEX, mCurrentIndex);
+    }
+
+    // lint: not work in save state, should use onSaveInstanceState(Bundle outState)
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        Log.d(TAG, "onSaveInstanceState");
+        outState.putInt(KEY_INDEX, mCurrentIndex);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Log.d(TAG, "onCreate(Bundle) called");
 
         setContentView(R.layout.activity_quiz);
+
+        if (savedInstanceState != null) {
+            mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
+        }
 
         mQuestionTextView = findViewById(R.id.question_text_view);
         updateQuestion();
