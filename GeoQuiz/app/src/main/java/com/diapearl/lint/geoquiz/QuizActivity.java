@@ -11,6 +11,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.NumberFormat;
+
 public class QuizActivity extends AppCompatActivity {
     private static final String TAG = "QuizActivity";
     private static final String KEY_INDEX = "index";
@@ -79,7 +81,6 @@ public class QuizActivity extends AppCompatActivity {
                     Toast.makeText(QuizActivity.this, R.string.answered_toast, Toast.LENGTH_SHORT).show();
                 } else {
                     checkAnswer(true);
-                    mQuestionsBank[mCurrentIndex].setAnswered(true);
                 }
             }
         });
@@ -93,7 +94,6 @@ public class QuizActivity extends AppCompatActivity {
                     Toast.makeText(QuizActivity.this, R.string.answered_toast, Toast.LENGTH_SHORT).show();
                 } else {
                     checkAnswer(false);
-                    mQuestionsBank[mCurrentIndex].setAnswered(true);
                 }
             }
         });
@@ -174,10 +174,42 @@ public class QuizActivity extends AppCompatActivity {
 
         if (userPressedTrue == answerIsTrue) {
             messageResId = R.string.correct_toast;
+            mQuestionsBank[mCurrentIndex].setAnswerCorrect(true);
         } else {
             messageResId = R.string.incorrect_toast;
+            mQuestionsBank[mCurrentIndex].setAnswerCorrect(false);
         }
 
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show();
+
+        mQuestionsBank[mCurrentIndex].setAnswered(true);
+
+        getScore();
+    }
+
+    private void getScore() {
+        int numOfCorrect = 0;
+        int numOfAnswered = 0;
+
+
+        for (int i = 0; i < mQuestionsBank.length; i++) {
+            if (mQuestionsBank[i].isAnswered()) {
+                numOfAnswered += 1;
+                if (mQuestionsBank[i].isAnswerCorrect()) {
+                    numOfCorrect += 1;
+                }
+            }
+        }
+
+        NumberFormat nf = NumberFormat.getPercentInstance();
+        double correctPercent = (double)numOfCorrect/numOfAnswered;
+
+        if (numOfAnswered == mQuestionsBank.length) {
+            Log.d(TAG, "Answered: " + numOfAnswered + "Correct: " + numOfCorrect + "Percent: " + correctPercent);
+            Toast toast= Toast.makeText(this, "Score by Percent: "+nf.format(correctPercent),
+                        Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.TOP, 0, 0);
+            toast.show();
+        }
     }
 }

@@ -4,6 +4,7 @@ public class Question {
     private int mTextResId;
     private boolean mAnswerTrue;
     private boolean mAnswered;
+    private boolean mAnswerCorrect;
 
     public boolean isAnswerTrue() {
         return mAnswerTrue;
@@ -32,5 +33,13 @@ public class Question {
 
     public void setAnswered(boolean answered) {
         mAnswered = answered;
+    }
+
+    public boolean isAnswerCorrect() {
+        return mAnswerCorrect;
+    }
+
+    public void setAnswerCorrect(boolean answerCorrect) {
+        mAnswerCorrect = answerCorrect;
     }
 }
