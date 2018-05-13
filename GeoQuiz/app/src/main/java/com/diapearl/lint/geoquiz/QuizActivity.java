@@ -1,5 +1,6 @@
 package com.diapearl.lint.geoquiz;
 
+import android.content.Intent;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +22,8 @@ public class QuizActivity extends AppCompatActivity {
     private Button mFalseButton;
     private ImageButton mNextButton;
     private ImageButton mPrevButton;
+
+    private Button mCheatButton;
 
     private TextView mQuestionTextView;
 
@@ -95,6 +98,16 @@ public class QuizActivity extends AppCompatActivity {
                 } else {
                     checkAnswer(false);
                 }
+            }
+        });
+
+        mCheatButton= findViewById(R.id.cheat_button);
+        mCheatButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(QuizActivity.this, CheatActivity.class);
+                startActivity(intent);
             }
         });
 
