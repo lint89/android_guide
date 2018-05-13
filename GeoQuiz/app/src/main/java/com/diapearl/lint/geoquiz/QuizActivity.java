@@ -1,5 +1,6 @@
 package com.diapearl.lint.geoquiz;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.PersistableBundle;
@@ -18,6 +19,7 @@ import java.text.NumberFormat;
 public class QuizActivity extends AppCompatActivity {
     private static final String TAG = "QuizActivity";
     private static final String KEY_INDEX = "index";
+    private static final int REQUEST_CODE_CHEAT = 0;
 
     private Button mTrueButton;
     private Button mFalseButton;
@@ -38,7 +40,22 @@ public class QuizActivity extends AppCompatActivity {
     };
 
     private int mCurrentIndex = 0;
+    private boolean mIsCheater;
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+
+        if (requestCode == REQUEST_CODE_CHEAT) {
+            if (data == null) {
+                return ;
+            }
+
+            mIsCheater = CheatActivity.wasAnswerShown(data);
+        }
+    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -110,7 +127,7 @@ public class QuizActivity extends AppCompatActivity {
             public void onClick(View v) {
                 boolean answerIsTrue = mQuestionsBank[mCurrentIndex].isAnswerTrue();
                 Intent intent = CheatActivity.newIntent(QuizActivity.this, answerIsTrue);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE_CHEAT);
             }
         });
 
@@ -170,6 +187,7 @@ public class QuizActivity extends AppCompatActivity {
 
     private void nextQuestion() {
         mCurrentIndex = (mCurrentIndex + 1) % mQuestionsBank.length;
+        mIsCheater = false;
         updateQuestion();
     }
 
@@ -180,6 +198,7 @@ public class QuizActivity extends AppCompatActivity {
             mCurrentIndex = (mCurrentIndex - 1) % mQuestionsBank.length;
         }
 
+        mIsCheater = false;
         updateQuestion();
     }
 
@@ -188,12 +207,16 @@ public class QuizActivity extends AppCompatActivity {
 
         int messageResId = 0;
 
-        if (userPressedTrue == answerIsTrue) {
-            messageResId = R.string.correct_toast;
-            mQuestionsBank[mCurrentIndex].setAnswerCorrect(true);
+        if (mIsCheater) {
+            messageResId = R.string.judgment_toast;
         } else {
-            messageResId = R.string.incorrect_toast;
-            mQuestionsBank[mCurrentIndex].setAnswerCorrect(false);
+            if (userPressedTrue == answerIsTrue) {
+                messageResId = R.string.correct_toast;
+                mQuestionsBank[mCurrentIndex].setAnswerCorrect(true);
+            } else {
+                messageResId = R.string.incorrect_toast;
+                mQuestionsBank[mCurrentIndex].setAnswerCorrect(false);
+            }
         }
 
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show();
