@@ -19,6 +19,7 @@ import java.text.NumberFormat;
 public class QuizActivity extends AppCompatActivity {
     private static final String TAG = "QuizActivity";
     private static final String KEY_INDEX = "index";
+    private static final String KEY_ISCHEATER = "ischeater";
     private static final int REQUEST_CODE_CHEAT = 0;
 
     private Button mTrueButton;
@@ -62,6 +63,7 @@ public class QuizActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         Log.i(TAG, "onSaveInstanceState");
         outState.putInt(KEY_INDEX, mCurrentIndex);
+        outState.putBoolean(KEY_ISCHEATER, mIsCheater);
     }
 
     // lint: not work in save state, should use onSaveInstanceState(Bundle outState)
@@ -82,6 +84,7 @@ public class QuizActivity extends AppCompatActivity {
 
         if (savedInstanceState != null) {
             mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
+            mIsCheater = savedInstanceState.getBoolean(KEY_ISCHEATER, false);
         }
 
         mQuestionTextView = findViewById(R.id.question_text_view);
