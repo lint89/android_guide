@@ -15,7 +15,10 @@ public class CheatActivity extends AppCompatActivity {
     private static final String EXTRA_ANSWER_SHOWN =
             "com.diapearl.lint.geoquiz.answer_shown";
 
+    private static final String KEY_ISCHEATER = "isCheater";
+
     private boolean mAnswerIsTrue;
+    private boolean mIsCheater;
 
     private TextView mAnswerTextView;
     private Button mShowAnswerButton;
@@ -36,6 +39,22 @@ public class CheatActivity extends AppCompatActivity {
         return result.getBooleanExtra(EXTRA_ANSWER_SHOWN, false);
     }
 
+    private void setAnswerTextView() {
+        if (mAnswerIsTrue) {
+            mAnswerTextView.setText(R.string.true_button);
+        } else {
+            mAnswerTextView.setText(R.string.false_button);
+        }
+
+        setAnswerResult(true);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(KEY_ISCHEATER, mIsCheater);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,18 +64,21 @@ public class CheatActivity extends AppCompatActivity {
 
         mAnswerTextView = findViewById(R.id.answer_text_view);
 
+        if (savedInstanceState != null) {
+            mIsCheater = savedInstanceState.getBoolean(KEY_ISCHEATER, false);
+
+            if (mIsCheater) {
+                setAnswerTextView();
+            }
+        }
+
         mShowAnswerButton = findViewById(R.id.show_answer_button);
         mShowAnswerButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                if (mAnswerIsTrue) {
-                    mAnswerTextView.setText(R.string.true_button);
-                } else {
-                    mAnswerTextView.setText(R.string.false_button);
-                }
-
-                setAnswerResult(true);
+                setAnswerTextView();
+                mIsCheater = true;
             }
         });
     }
