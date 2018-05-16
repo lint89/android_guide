@@ -5,6 +5,7 @@ public class Question {
     private boolean mAnswerTrue;
     private boolean mAnswered;
     private boolean mAnswerCorrect;
+    private boolean mCheated;
 
     public boolean isAnswerTrue() {
         return mAnswerTrue;
@@ -41,5 +42,13 @@ public class Question {
 
     public void setAnswerCorrect(boolean answerCorrect) {
         mAnswerCorrect = answerCorrect;
+    }
+
+    public boolean isCheated() {
+        return mCheated;
+    }
+
+    public void setCheated(boolean cheated) {
+        mCheated = cheated;
     }
 }

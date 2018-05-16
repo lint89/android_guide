@@ -55,6 +55,10 @@ public class QuizActivity extends AppCompatActivity {
             }
 
             mIsCheater = CheatActivity.wasAnswerShown(data);
+
+            if (mIsCheater) {
+                mQuestionsBank[mCurrentIndex].setCheated(true);
+            }
         }
     }
 
@@ -210,7 +214,9 @@ public class QuizActivity extends AppCompatActivity {
 
         int messageResId = 0;
 
-        if (mIsCheater) {
+        boolean questionIsCheated = mQuestionsBank[mCurrentIndex].isCheated();
+
+        if (mIsCheater | questionIsCheated) {
             messageResId = R.string.judgment_toast;
         } else {
             if (userPressedTrue == answerIsTrue) {
