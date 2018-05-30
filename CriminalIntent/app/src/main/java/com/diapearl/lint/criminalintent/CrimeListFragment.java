@@ -1,6 +1,7 @@
 package com.diapearl.lint.criminalintent;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -74,9 +75,8 @@ class CrimeListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(getActivity(),
-                    mCrime.getTitle() + " clicked", Toast.LENGTH_SHORT).show();
-
+            Intent intent = new Intent(getActivity(), CrimeActivity.class);
+            startActivity(intent);
         }
     }
 
