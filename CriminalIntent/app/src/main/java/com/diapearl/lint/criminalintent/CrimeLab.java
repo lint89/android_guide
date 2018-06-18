@@ -11,6 +11,8 @@ import com.diapearl.lint.criminalintent.database.CrimeCursorWrapper;
 import com.diapearl.lint.criminalintent.database.CrimeDbSchema;
 import com.diapearl.lint.criminalintent.database.CrimeDbSchema.CrimeTable;
 
+import java.io.File;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -75,6 +77,11 @@ public class CrimeLab {
         } finally {
             cursor.close();
         }
+    }
+
+    public File getPhotoFile(Crime crime) {
+        File filesDir = mContext.getFilesDir();
+        return new File(filesDir, crime.getPhotoFilename());
     }
 
     public void updateCrime(Crime crime) {
